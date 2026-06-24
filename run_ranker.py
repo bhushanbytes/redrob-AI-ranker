@@ -11,7 +11,7 @@ from src.ranker import generate_reason, rank_candidates
 
 
 DATA_PATH = Path("data/candidates.jsonl")
-OUTPUT_PATH = Path("submissions/top_100.csv")
+OUTPUT_PATH = Path("submissions/bhushankale888_6378.csv")
 FIELDNAMES = ["candidate_id", "rank", "score", "reasoning"]
 
 

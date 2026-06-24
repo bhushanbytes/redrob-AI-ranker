@@ -20,14 +20,27 @@ python run_ranker.py
 Output:
 
 ```text
-submissions/top_100.csv
+submissions/bhushankale888_6378.csv
 ```
 
 Validate locally:
 
 ```powershell
-python validate_submission.py submissions\top_100.csv
+python validate_submission.py submissions\bhushankale888_6378.csv
 ```
+
+## Small-Sample Sandbox
+
+Run the Streamlit demo locally:
+
+```powershell
+pip install -r requirements-sandbox.txt
+streamlit run app/streamlit_app.py
+```
+
+The demo accepts a JSONL upload containing up to 100 candidates and produces
+a ranked CSV using the same filtering, feature extraction, scoring, and
+reasoning pipeline as the full submission.
 
 ## Method
 

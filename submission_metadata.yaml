@@ -1,17 +1,17 @@
-team_name: "TODO-team-name"
+team_name: "Lone Wolff"
 
 primary_contact:
-  name: "TODO Full Name"
-  email: "TODO@example.com"
-  phone: "+91-TODO"
+  name: "Bhushan Dattatraya Kale"
+  email: "bhushankale888@gmail.com"
+  phone: "+91-9356593358"
 
 team_members:
-  - name: "TODO Full Name"
-    email: "TODO@example.com"
-    role: "Ranker Engineer"
+  - name: "Bhushan Dattatraya Kale"
+    email: "bhushankale888@gmail.com"
+    role: "Solo Participant / Ranker Engineer"
 
-github_repo: "https://github.com/TODO/TODO"
-sandbox_link: "https://TODO"
+github_repo: "https://github.com/bhushanbytes/redrob-AI-ranker"
+sandbox_link: "TODO-after-Streamlit-deployment"
 reproduce_command: "python run_ranker.py"
 
 compute:
