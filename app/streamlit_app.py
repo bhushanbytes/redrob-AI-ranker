@@ -19,12 +19,35 @@ from src.ranker import generate_reason, rank_candidates
 
 
 MAX_CANDIDATES = 100
+SAMPLE_PATH = ROOT / "samples" / "sample_candidates.json"
 
 
-def parse_jsonl(contents: bytes) -> list[dict]:
-    """Parse and validate a bounded candidate JSONL upload."""
+def parse_candidates(contents: bytes) -> list[dict]:
+    """Parse a JSON array or JSONL upload and validate its candidate records."""
+    text = contents.decode("utf-8").strip()
+    if not text:
+        return []
+
+    if text.startswith("["):
+        parsed = json.loads(text)
+        if not isinstance(parsed, list):
+            raise ValueError("JSON input must contain an array of candidates.")
+        candidates = parsed
+    else:
+        candidates = _parse_jsonl(text)
+
+    for index, candidate in enumerate(candidates, start=1):
+        if not isinstance(candidate, dict) or not candidate.get("candidate_id"):
+            raise ValueError(f"Candidate {index} is missing candidate_id.")
+    if len(candidates) > MAX_CANDIDATES:
+        raise ValueError(f"Upload at most {MAX_CANDIDATES} candidates.")
+    return candidates
+
+
+def _parse_jsonl(text: str) -> list[dict]:
+    """Parse newline-delimited candidate objects."""
     candidates: list[dict] = []
-    for line_number, raw_line in enumerate(contents.decode("utf-8").splitlines(), start=1):
+    for line_number, raw_line in enumerate(text.splitlines(), start=1):
         line = raw_line.strip()
         if not line:
             continue
@@ -32,11 +55,7 @@ def parse_jsonl(contents: bytes) -> list[dict]:
             candidate = json.loads(line)
         except json.JSONDecodeError as exc:
             raise ValueError(f"Invalid JSON on line {line_number}: {exc}") from exc
-        if not isinstance(candidate, dict) or not candidate.get("candidate_id"):
-            raise ValueError(f"Line {line_number} is missing candidate_id.")
         candidates.append(candidate)
-        if len(candidates) > MAX_CANDIDATES:
-            raise ValueError(f"Upload at most {MAX_CANDIDATES} candidates.")
     return candidates
 
 
@@ -65,13 +84,21 @@ def build_csv(candidates: list[dict]) -> tuple[list[dict], str]:
 
 st.set_page_config(page_title="Redrob AI Ranker", layout="wide")
 st.title("Redrob AI Candidate Ranker")
-st.caption("CPU-only deterministic ranking for a JSONL sample of up to 100 candidates.")
+st.caption("CPU-only deterministic ranking for a JSON or JSONL sample of up to 100 candidates.")
 
-upload = st.file_uploader("Candidate JSONL", type=["jsonl", "json"])
+if SAMPLE_PATH.exists():
+    st.download_button(
+        "Download 50-candidate test sample",
+        SAMPLE_PATH.read_bytes(),
+        file_name="sample_candidates.json",
+        mime="application/json",
+    )
+
+upload = st.file_uploader("Candidate JSON or JSONL", type=["jsonl", "json"])
 
 if upload is not None:
     try:
-        uploaded_candidates = parse_jsonl(upload.getvalue())
+        uploaded_candidates = parse_candidates(upload.getvalue())
         if not uploaded_candidates:
             st.warning("The uploaded file contains no candidate records.")
         elif st.button("Rank candidates", type="primary"):
