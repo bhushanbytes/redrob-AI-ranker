@@ -34,7 +34,7 @@ python validate_submission.py submissions\bhushankale888_6378.csv
 Run the Streamlit demo locally:
 
 ```powershell
-pip install -r requirements-sandbox.txt
+pip install -r app/requirements.txt
 streamlit run app/streamlit_app.py
 ```
 
