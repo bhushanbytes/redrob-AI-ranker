@@ -1,0 +1,51 @@
+team_name: "TODO-team-name"
+
+primary_contact:
+  name: "TODO Full Name"
+  email: "TODO@example.com"
+  phone: "+91-TODO"
+
+team_members:
+  - name: "TODO Full Name"
+    email: "TODO@example.com"
+    role: "Ranker Engineer"
+
+github_repo: "https://github.com/TODO/TODO"
+sandbox_link: "https://TODO"
+reproduce_command: "python run_ranker.py"
+
+compute:
+  platform: "Local Windows machine"
+  cpu_cores: 8
+  ram_gb: 16
+  python_version: "3.11"
+  os: "Windows"
+  uses_gpu_for_inference: false
+  has_network_during_ranking: false
+  pre_computation_required: false
+  pre_computation_time_minutes: 0
+
+ai_tools_used:
+  - "ChatGPT"
+  - "Codex"
+
+ai_usage_summary: |
+  Used AI coding assistance for architecture, implementation, debugging, and review.
+  No candidate data is sent to hosted LLM APIs during ranking.
+
+methodology_summary: |
+  Deterministic CPU-only ranker using explicit features rather than embedding-only similarity.
+  The pipeline streams candidates, normalizes profile text, extracts career, skill, behavioral,
+  logistics, and authenticity signals, filters obvious non-fits conservatively, and ranks by a
+  configurable weighted score. The model prioritizes production retrieval, search, ranking,
+  recommendation, embeddings/vector DB experience, product-company background, 5-9 year JD fit,
+  India/location readiness, recent activity, and recruiter responsiveness. Authenticity penalties
+  reduce keyword-stuffers, unrealistic skill profiles, consulting-only histories, disfavored
+  non-IR domains, and honeypot-like records.
+
+declarations:
+  read_submission_spec: true
+  code_is_original_work: true
+  no_collusion: true
+  honeypot_check_done: true
+  reproduction_tested: true
